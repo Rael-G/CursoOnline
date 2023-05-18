@@ -4,25 +4,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace CursoOnline.DominioTest.Curso
 {
-	public class CursoTest
+	public class CursoTest : IDisposable
 	{
+		private readonly ITestOutputHelper _output;
+		private readonly string _nome;
+		private readonly double _cargaHoraria;
+		private readonly PublicoAlvo _publicoAlvo;
+		private readonly double _valor;
+
+		public CursoTest(ITestOutputHelper output) 
+		{
+			_output = output;
+			_output.WriteLine("Construtor sendo executado!");
+
+			_nome = "informatica básica";
+			_cargaHoraria = 20f;
+			_publicoAlvo = PublicoAlvo.Estudante;
+			_valor = 950f;
+		}
+
+		public void Dispose()
+		{
+			_output.WriteLine("Dispose sendo executado!");
+		}
+
 		[Fact]
 		public void DeveCriarCurso()
 		{
-			string nome = "informatica básica";
-			double cargaHoraria = 20f;
-			PublicoAlvo publicoAlvo = PublicoAlvo.Estudante;
-			double valor = 950f;
 
-			Curso curso = new Curso(nome, cargaHoraria, publicoAlvo, valor);
+			Curso curso = new Curso(_nome, _cargaHoraria, _publicoAlvo, _valor);
 
-			Assert.Equal(nome, curso.Nome);
-			Assert.Equal(valor, curso.Valor);
-			Assert.Equal(publicoAlvo, curso.PublicoAlvo);
-			Assert.Equal(valor, curso.Valor);
+			Assert.Equal(_nome, curso.Nome);
+			Assert.Equal(_valor, curso.Valor);
+			Assert.Equal(_publicoAlvo, curso.PublicoAlvo);
+			Assert.Equal(_valor, curso.Valor);
 		}
 
 		[Theory]
@@ -30,12 +49,7 @@ namespace CursoOnline.DominioTest.Curso
 		[InlineData(null)]
 		public void NaoDeveCursoTerNomeInvalido(string nomeInvalido) 
 		{
-			string nome = "informatica básica";
-			double cargaHoraria = 20f;
-			PublicoAlvo publicoAlvo = PublicoAlvo.Estudante;
-			double valor = 950f;
-
-			Assert.Throws<ArgumentException> (() => new Curso(nomeInvalido, cargaHoraria, publicoAlvo, valor)).ComMensagem("Nome Inválido!");
+			Assert.Throws<ArgumentException> (() => new Curso(nomeInvalido, _cargaHoraria, _publicoAlvo, _valor)).ComMensagem("Nome Inválido!");
 		}
 
 		[Theory]
@@ -44,14 +58,7 @@ namespace CursoOnline.DominioTest.Curso
 		[InlineData(-100)]
 		public void NãoDeveCursoTerCargaHorariaMenorQueUm( double cargaHorariaInvalida)
 		{
-			string nome = "informatica básica";
-			double cargaHoraria = 20f;
-			PublicoAlvo publicoAlvo = PublicoAlvo.Estudante;
-			double valor = 950f;
-
-			Assert.Throws<ArgumentException>(() => new Curso(nome, cargaHorariaInvalida, publicoAlvo, valor)).ComMensagem("Carga Horária Inválida!");
-
-		
+			Assert.Throws<ArgumentException>(() => new Curso(_nome, cargaHorariaInvalida, _publicoAlvo, _valor)).ComMensagem("Carga Horária Inválida!");
 		}
 
 		[Theory]
@@ -60,12 +67,7 @@ namespace CursoOnline.DominioTest.Curso
 		[InlineData(-100)]
 		public void NãoDeveCursoTerValorMenorOuIgualAZero(double ValorInvalido)
 		{
-			string nome = "informatica básica";
-			double cargaHoraria = 20f;
-			PublicoAlvo publicoAlvo = PublicoAlvo.Estudante;
-			double valor = 950f;
-
-			Assert.Throws<ArgumentException>(() => new Curso(nome, cargaHoraria, publicoAlvo, ValorInvalido)).ComMensagem("Valor Inválido!");
+			Assert.Throws<ArgumentException>(() => new Curso(_nome, _cargaHoraria, _publicoAlvo, ValorInvalido)).ComMensagem("Valor Inválido!");
 		}
 
 	}
