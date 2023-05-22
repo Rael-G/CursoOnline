@@ -1,4 +1,6 @@
-﻿using CursoOnline.DominioTest.Curso;
+﻿using CursoOnline.Dominio.Cursos.Enums;
+using CursoOnline.Dominio.Cursos;
+using CursoOnline.DominioTest.Cursos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,9 +52,9 @@ namespace CursoOnline.DominioTest._Builder
 			return this;
 		}
 
-		public CursoOnline.DominioTest.Curso.Curso Build()
+		public CursoOnline.Dominio.Cursos.Curso Build()
 		{
-			return new CursoOnline.DominioTest.Curso.Curso(_nome, _descricao, _cargaHoraria, _publicoAlvo, _valor);
+			return new CursoOnline.Dominio.Cursos.Curso(_nome, _descricao, _cargaHoraria, _publicoAlvo, _valor);
 		}
 	}
 }

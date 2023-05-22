@@ -1,12 +1,10 @@
-﻿using CursoOnline.DominioTest._Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Bogus;
+using CursoOnline.Dominio.Cursos;
+using CursoOnline.Dominio.Cursos.Enums;
+using CursoOnline.DominioTest._Util;
 using Xunit.Abstractions;
 
-namespace CursoOnline.DominioTest.Curso
+namespace CursoOnline.DominioTest.Cursos
 {
 	public class CursoTest : IDisposable
 	{
@@ -21,12 +19,13 @@ namespace CursoOnline.DominioTest.Curso
 		{
 			_output = output;
 			_output.WriteLine("Construtor sendo executado!");
+			var faker = new Faker();
 
-			_nome = "informatica básica";
-			_cargaHoraria = 20f;
+			_nome = faker.Name.FullName();
+			_cargaHoraria = faker.Random.Number(1, 100);
 			_publicoAlvo = PublicoAlvo.Estudante;
-			_valor = 950f;
-			_descricao = "Uma descrição";
+			_valor = faker.Random.Number(100, 1500);
+			_descricao = faker.Lorem.Paragraph();
 		}
 
 		public void Dispose()
@@ -38,7 +37,7 @@ namespace CursoOnline.DominioTest.Curso
 		public void DeveCriarCurso()
 		{
 
-			Curso curso = CursoOnline.DominioTest._Builder.CursoBuilder.Novo().Build();
+			Curso curso = new Curso(_nome, _descricao, _cargaHoraria, _publicoAlvo, _valor);
 
 			Assert.Equal(_nome, curso.Nome);
 			Assert.Equal(_descricao, curso.Descricao);
@@ -73,46 +72,5 @@ namespace CursoOnline.DominioTest.Curso
 			Assert.Throws<ArgumentException>(() => CursoOnline.DominioTest._Builder.CursoBuilder.Novo().ComValor(valorInvalido).Build()).ComMensagem("Valor Inválido!");
 		}
 
-	}
-
-	public enum PublicoAlvo
-	{
-		Estudante,
-		Universitário,
-		Empregado,
-		Empreendedor
-	}
-
-	public class Curso
-	{
-		public string Nome { get; private set; }
-        public string Descricao { get; set; }
-        public double CargaHoraria { get; private set; }
-        public PublicoAlvo PublicoAlvo { get; private set; }
-        public double Valor { get; private set; }
-
-        public Curso(string nome, string descricao, double cargaHoraria, PublicoAlvo publicoAlvo, double valor)
-		{
-			if (nome == string.Empty || nome == null)
-			{
-				throw new ArgumentException("Nome Inválido!");
-			}
-
-			if (cargaHoraria < 1) 
-			{
-				throw new ArgumentException("Carga Horária Inválida!");
-			}
-
-			if (valor <= 1)
-			{
-				throw new ArgumentException("Valor Inválido!");
-			}
-
-			Nome = nome;
-			Descricao = descricao;
-			CargaHoraria = cargaHoraria;
-			PublicoAlvo = publicoAlvo;
-			Valor = valor;
-		}
 	}
 }
