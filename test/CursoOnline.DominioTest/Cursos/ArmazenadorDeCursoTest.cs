@@ -1,68 +1,69 @@
-﻿using CursoOnline.Dominio.Cursos;
-using CursoOnline.Dominio.Cursos.Enums;
+﻿using Bogus;
+using CursoOnline.Dominio.Cursos;
+using CursoOnline.Dominio.Cursos.Interfaces;
+using CursoOnline.DominioTest._Builder;
+using CursoOnline.DominioTest._Util;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace CursoOnline.DominioTest.Cursos
 {
 	public class ArmazenadorDeCursoTest
 	{
+		private readonly ITestOutputHelper _output;
+		private readonly CursoDto _cursoDto;
+		private readonly Mock<ICursoRepositorio> _cursoRepositorioMock;
+		private readonly ArmazenadorDeCurso _armazenadorDeCurso;
+
+		public ArmazenadorDeCursoTest(ITestOutputHelper output)
+		{
+			var faker = new Faker();
+			_output = output;
+
+			_cursoDto = new CursoDto
+			{
+				Nome = faker.Name.JobTitle(),
+				Descricao = faker.Lorem.Letter(),
+				CargaHoraria = faker.Random.Number(1, 100),
+				PublicoAlvo = "Estudante",
+				Valor = faker.Random.Number(10, 600),
+			};
+
+			_cursoRepositorioMock = new Mock<ICursoRepositorio>();
+			_armazenadorDeCurso = new ArmazenadorDeCurso(_cursoRepositorioMock.Object);
+		}
+
+
 		[Fact]
 		public void DeveCriarCurso()
 		{
-			CursoDto cursoDto = new CursoDto
-			{
-				Nome = "informatica básica",
-				Descricao = "Uma descrição",
-				CargaHoraria = 20f,
-				PublicoAlvoId = 1,
-				Valor = 950f
-			};
+			_armazenadorDeCurso.Armazenar(_cursoDto);
 
-			var cursoRepositorioMock = new Mock<ICursoRepositorio>();
-
-			var armazenadorDeCurso = new ArmazenadorDeCurso(cursoRepositorioMock.Object);
-
-			armazenadorDeCurso.Armazenar(cursoDto);
-
-			cursoRepositorioMock.Verify(r => r.Adicionar(It.IsAny<Curso>()));
+			_cursoRepositorioMock.Verify(r => r.Adicionar(It.Is<Curso>(c =>
+				c.Nome == _cursoDto.Nome && c.Descricao == _cursoDto.Descricao &&
+				c.CargaHoraria == _cursoDto.CargaHoraria && c.Valor == _cursoDto.Valor))); ;
 		}
-	}
 
-	public interface ICursoRepositorio
-	{
-		void Adicionar(Curso curso);
-	}
-
-	internal class ArmazenadorDeCurso
-	{
-		private readonly ICursoRepositorio _cursoRepositorio;
-
-		public ArmazenadorDeCurso(ICursoRepositorio cursoRepositorio)
+		[Fact]
+		public void NaoDeveAdicionarCursoComMesmoNomeDeOutroJaSalvo()
 		{
-			_cursoRepositorio = cursoRepositorio;
+			var CursoJaSalvo = CursoBuilder.Novo().ComNome(_cursoDto.Nome).Build();
+
+			_cursoRepositorioMock.Setup(r => r.ObterPeloNome(_cursoDto.Nome)).Returns(CursoJaSalvo);
+
+			Assert.Throws<ArgumentException>(() => _armazenadorDeCurso.Armazenar(
+				_cursoDto)).ComMensagem("Nome do Curso já consta no Banco de dados");
 		}
 
-		internal void Armazenar(CursoDto cursoDto)
+		[Fact]
+		public void NaoDeveInformarPublicoAlvoInvalido()
 		{
-			var curso = new Curso(cursoDto.Nome, cursoDto.Descricao, 
-				cursoDto.CargaHoraria, PublicoAlvo.Estudante, cursoDto.Valor);
+			var publicoAlvoInvalido = "Médico";
+			_cursoDto.PublicoAlvo = publicoAlvoInvalido;
 
-			_cursoRepositorio.Adicionar(curso);
+			Assert.Throws<ArgumentException>(() => _armazenadorDeCurso.Armazenar(
+				_cursoDto)).ComMensagem("Publico Alvo Inválido");
 		}
-	}
-
-	internal class CursoDto
-	{
-		public string Nome { get; set; }
-		public string Descricao { get; set; }
-		public float CargaHoraria { get; set; }
-		public int PublicoAlvoId { get; set; }
-		public float Valor { get; set; }
 	}
 }
 
