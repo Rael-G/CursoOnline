@@ -1,5 +1,5 @@
 ﻿
-namespace CursoOnline.Dominio.Cursos
+namespace CursoOnline.Web.Models
 {
 	public class CursoDto
 	{

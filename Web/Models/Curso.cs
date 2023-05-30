@@ -1,11 +1,6 @@
-﻿using CursoOnline.Dominio.Cursos.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CursoOnline.Web.Models.Enums;
 
-namespace CursoOnline.Dominio.Cursos
+namespace CursoOnline.Web.Models
 {
 	public class Curso
 	{

@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CursoOnline.Dominio\CursoOnline.Dominio.csproj" />
+    <ProjectReference Include="..\..\Web\CursoOnline.Web.csproj" />
   </ItemGroup>
 
 </Project>

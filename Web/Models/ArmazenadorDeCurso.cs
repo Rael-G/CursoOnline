@@ -1,7 +1,7 @@
-﻿using CursoOnline.Dominio.Cursos.Enums;
-using CursoOnline.Dominio.Cursos.Interfaces;
+﻿using CursoOnline.Web.Models.Enums;
+using CursoOnline.Web.Models.Interfaces;
 
-namespace CursoOnline.Dominio.Cursos
+namespace CursoOnline.Web.Models
 {
 	public class ArmazenadorDeCurso
 	{

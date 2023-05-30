@@ -1,6 +1,6 @@
 ﻿using Bogus;
-using CursoOnline.Dominio.Cursos;
-using CursoOnline.Dominio.Cursos.Enums;
+using CursoOnline.Web.Models;
+using CursoOnline.Web.Models.Enums;
 using CursoOnline.DominioTest._Util;
 using Xunit.Abstractions;
 
@@ -51,7 +51,7 @@ namespace CursoOnline.DominioTest.Cursos
 		[InlineData(null)]
 		public void NaoDeveCursoTerNomeInvalido(string nomeInvalido) 
 		{
-			Assert.Throws<ArgumentException> (() => CursoOnline.DominioTest._Builder.CursoBuilder.Novo().ComNome(nomeInvalido).Build()).ComMensagem("Nome Inválido!");
+			Assert.Throws<ArgumentException> (() => _Builder.CursoBuilder.Novo().ComNome(nomeInvalido).Build()).ComMensagem("Nome Inválido!");
 		}
 
 		[Theory]
@@ -60,7 +60,7 @@ namespace CursoOnline.DominioTest.Cursos
 		[InlineData(-100)]
 		public void NãoDeveCursoTerCargaHorariaMenorQueUm( double cargaHorariaInvalida)
 		{
-			Assert.Throws<ArgumentException>(() => CursoOnline.DominioTest._Builder.CursoBuilder.Novo().ComCargaHoraria(cargaHorariaInvalida).Build()).ComMensagem("Carga Horária Inválida!");
+			Assert.Throws<ArgumentException>(() => _Builder.CursoBuilder.Novo().ComCargaHoraria(cargaHorariaInvalida).Build()).ComMensagem("Carga Horária Inválida!");
 		}
 
 		[Theory]
@@ -69,7 +69,7 @@ namespace CursoOnline.DominioTest.Cursos
 		[InlineData(-100)]
 		public void NãoDeveCursoTerValorMenorOuIgualAZero(double valorInvalido)
 		{
-			Assert.Throws<ArgumentException>(() => CursoOnline.DominioTest._Builder.CursoBuilder.Novo().ComValor(valorInvalido).Build()).ComMensagem("Valor Inválido!");
+			Assert.Throws<ArgumentException>(() => _Builder.CursoBuilder.Novo().ComValor(valorInvalido).Build()).ComMensagem("Valor Inválido!");
 		}
 
 	}

@@ -1,6 +1,6 @@
 ﻿using Bogus;
-using CursoOnline.Dominio.Cursos;
-using CursoOnline.Dominio.Cursos.Interfaces;
+using CursoOnline.Web.Models;
+using CursoOnline.Web.Models.Interfaces;
 using CursoOnline.DominioTest._Builder;
 using CursoOnline.DominioTest._Util;
 using Moq;
