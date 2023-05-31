@@ -4,11 +4,14 @@ namespace CursoOnline.Web.Models
 {
 	public class Curso
 	{
-		public string Nome { get; private set; }
+		public Guid Id { get; set; }
+		public string Nome { get; set; }
 		public string Descricao { get; set; }
-		public double CargaHoraria { get; private set; }
-		public PublicoAlvo PublicoAlvo { get; private set; }
-		public double Valor { get; private set; }
+		public double CargaHoraria { get; set; }
+		public PublicoAlvo PublicoAlvo { get; set; }
+		public double Valor { get; set; }
+
+		public Curso() { }
 
 		public Curso(string nome, string descricao, double cargaHoraria, PublicoAlvo publicoAlvo, double valor)
 		{
