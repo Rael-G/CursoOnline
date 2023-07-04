@@ -8,6 +8,9 @@ using Xunit.Abstractions;
 
 namespace CursoOnline.DominioTest.Cursos
 {
+
+	//TODO Converter essa classe pra funcionar com os recursos do framework
+
 	public class ArmazenadorDeCursoTest
 	{
 		private readonly ITestOutputHelper _output;

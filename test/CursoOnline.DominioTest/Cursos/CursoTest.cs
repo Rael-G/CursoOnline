@@ -6,6 +6,8 @@ using Xunit.Abstractions;
 
 namespace CursoOnline.DominioTest.Cursos
 {
+	//TODO Converter classe para trabalhar com o framework
+
 	public class CursoTest : IDisposable
 	{
 		private readonly ITestOutputHelper _output;
@@ -51,7 +53,7 @@ namespace CursoOnline.DominioTest.Cursos
 		[InlineData(null)]
 		public void NaoDeveCursoTerNomeInvalido(string nomeInvalido) 
 		{
-			Assert.Throws<ArgumentException> (() => _Builder.CursoBuilder.Novo().ComNome(nomeInvalido).Build()).ComMensagem("Nome Inválido!");
+			Assert.Throws<ArgumentException> (() => _Builder.CursoBuilder.Novo().ComNome(nomeInvalido).Build()).ComMensagem(CursoOnline.Web._base.Resource.NomeInvalido);
 		}
 
 		[Theory]
@@ -60,7 +62,7 @@ namespace CursoOnline.DominioTest.Cursos
 		[InlineData(-100)]
 		public void NãoDeveCursoTerCargaHorariaMenorQueUm( double cargaHorariaInvalida)
 		{
-			Assert.Throws<ArgumentException>(() => _Builder.CursoBuilder.Novo().ComCargaHoraria(cargaHorariaInvalida).Build()).ComMensagem("Carga Horária Inválida!");
+			Assert.Throws<ArgumentException>(() => _Builder.CursoBuilder.Novo().ComCargaHoraria(cargaHorariaInvalida).Build()).ComMensagem(CursoOnline.Web._base.Resource.CargaInvalida);
 		}
 
 		[Theory]
@@ -69,7 +71,13 @@ namespace CursoOnline.DominioTest.Cursos
 		[InlineData(-100)]
 		public void NãoDeveCursoTerValorMenorOuIgualAZero(double valorInvalido)
 		{
-			Assert.Throws<ArgumentException>(() => _Builder.CursoBuilder.Novo().ComValor(valorInvalido).Build()).ComMensagem("Valor Inválido!");
+			Assert.Throws<ArgumentException>(() => _Builder.CursoBuilder.Novo().ComValor(valorInvalido).Build()).ComMensagem(CursoOnline.Web._base.Resource.ValorInvalido);
+		}
+
+		[Fact]
+		public void DeveAlterarNome()
+		{
+			
 		}
 
 	}

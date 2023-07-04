@@ -10,6 +10,7 @@ namespace CursoOnline.DominioTest._Builder
 		private PublicoAlvo _publicoAlvo = PublicoAlvo.Estudante;
 		private double _valor = 950f;
 		private string _descricao = "Uma descrição";
+		private int _id = 223;
 
 		public static CursoBuilder Novo() 
 		{
@@ -43,6 +44,12 @@ namespace CursoOnline.DominioTest._Builder
 		public CursoBuilder ComValor(double valor)
 		{
 			_valor = valor;
+			return this;
+		}
+
+		public CursoBuilder ComId(int id)
+		{
+			_id = id;
 			return this;
 		}
 
