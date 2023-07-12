@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CursoOnline.Web.Data;
 using CursoOnline.Web.Models;
+using CursoOnline.Web.Models.Interfaces;
 
 namespace CursoOnline.Web.Controllers
 {
     public class CursoController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICursoRepository _context;
 
-        public CursoController(ApplicationDbContext context)
+        public CursoController(ICursoRepository context)
         {
             _context = context;
         }
@@ -28,7 +29,7 @@ namespace CursoOnline.Web.Controllers
         }
 
         // GET: Curso/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null || _context.Curso == null)
             {
@@ -60,7 +61,6 @@ namespace CursoOnline.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                curso.Id = Guid.NewGuid();
                 _context.Add(curso);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -69,7 +69,7 @@ namespace CursoOnline.Web.Controllers
         }
 
         // GET: Curso/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null || _context.Curso == null)
             {
@@ -89,7 +89,7 @@ namespace CursoOnline.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Nome,Descricao,CargaHoraria,PublicoAlvo,Valor")] Curso curso)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao,CargaHoraria,PublicoAlvo,Valor")] Curso curso)
         {
             if (id != curso.Id)
             {
@@ -120,7 +120,7 @@ namespace CursoOnline.Web.Controllers
         }
 
         // GET: Curso/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Curso == null)
             {
@@ -140,7 +140,7 @@ namespace CursoOnline.Web.Controllers
         // POST: Curso/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Curso == null)
             {
@@ -156,7 +156,7 @@ namespace CursoOnline.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CursoExists(Guid id)
+        private bool CursoExists(int id)
         {
           return (_context.Curso?.Any(e => e.Id == id)).GetValueOrDefault();
         }

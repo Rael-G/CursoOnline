@@ -7,14 +7,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CursoOnline.Web.Data;
 using CursoOnline.Web.Models;
+using CursoOnline.Web.Models.Enums;
+using CursoOnline.Web.Models.Interfaces;
+
 
 namespace CursoOnline.Web.Controllers
 {
     public class AlunoController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAlunoRepository _context;
 
-        public AlunoController(ApplicationDbContext context)
+        public AlunoController(IAlunoRepository context)
         {
             _context = context;
         }
@@ -22,9 +25,9 @@ namespace CursoOnline.Web.Controllers
         // GET: Aluno
         public async Task<IActionResult> Index()
         {
-              return _context.Aluno != null ? 
-                          View(await _context.Aluno.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Aluno'  is null.");
+            return _context.Aluno != null ?
+                        View(await _context.Aluno.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Aluno'  is null.");
         }
 
         // GET: Aluno/Details/5
@@ -75,7 +78,7 @@ namespace CursoOnline.Web.Controllers
                 return NotFound();
             }
 
-            var aluno = await _context.Aluno.FindAsync(id);
+            var aluno = await _context.GetAlunoBy(id);
             if (aluno == null)
             {
                 return NotFound();
@@ -86,6 +89,8 @@ namespace CursoOnline.Web.Controllers
         // POST: Aluno/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Cpf,Email,PublicoAlvo")] Aluno aluno)
@@ -93,6 +98,11 @@ namespace CursoOnline.Web.Controllers
             if (id != aluno.Id)
             {
                 return NotFound();
+            }
+
+            if (!_context.IsValid(id, aluno))
+            {
+                return BadRequest();
             }
 
             if (ModelState.IsValid)
@@ -150,14 +160,14 @@ namespace CursoOnline.Web.Controllers
             {
                 _context.Aluno.Remove(aluno);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AlunoExists(int id)
         {
-          return (_context.Aluno?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Aluno?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

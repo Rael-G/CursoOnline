@@ -1,18 +1,28 @@
 ﻿using CursoOnline.Web.Models.Enums;
 using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace CursoOnline.Web.Models
 {
-	public class Aluno
+    //TODO
+    //privar os sets
+    //alterar apenas nome
+
+    public class Aluno
 	{
         public int Id { get; set; }
         [Required(AllowEmptyStrings = false)]
 		[DisallowNull]
 		public string Nome { get; set; }
+		[Required]
+		[DisplayName("CPF")]
 		public string Cpf { get; set; }
-		public string Email { get; set; }
-		public PublicoAlvo PublicoAlvo { get; set; }
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+        [Required]
+        public PublicoAlvo PublicoAlvo { get; set; }
 
 		public Aluno() { }
 
@@ -24,4 +34,6 @@ namespace CursoOnline.Web.Models
 			PublicoAlvo = publicoAlvo;
 		}
 	}
+
+	
 }

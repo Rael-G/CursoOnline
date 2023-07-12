@@ -3,49 +3,32 @@ using CursoOnline.Web.Models;
 using CursoOnline.Web.Models.Enums;
 using CursoOnline.DominioTest._Util;
 using Xunit.Abstractions;
+using Bogus.DataSets;
 
 namespace CursoOnline.DominioTest.Cursos
 {
-	//TODO Converter classe para trabalhar com o framework
-
-	public class CursoTest : IDisposable
+	//TODO
+	//refatorar para trabalhar com o validator
+	public class CursoTest
 	{
-		private readonly ITestOutputHelper _output;
-		private readonly string _nome;
-		private readonly double _cargaHoraria;
-		private readonly PublicoAlvo _publicoAlvo;
-		private readonly double _valor;
-		private readonly string _descricao;
-
-		public CursoTest(ITestOutputHelper output) 
-		{
-			_output = output;
-			_output.WriteLine("Construtor sendo executado!");
-			var faker = new Faker();
-
-			_nome = faker.Name.FullName();
-			_cargaHoraria = faker.Random.Number(1, 100);
-			_publicoAlvo = PublicoAlvo.Estudante;
-			_valor = faker.Random.Number(100, 1500);
-			_descricao = faker.Lorem.Paragraph();
-		}
-
-		public void Dispose()
-		{
-			_output.WriteLine("Dispose sendo executado!");
-		}
+        private static Faker _faker = new Faker();
 
 		[Fact]
 		public void DeveCriarCurso()
 		{
+            string nome = _faker.Name.FullName();
+            double cargaHoraria = _faker.Random.Number(1, 100);
+            PublicoAlvo publicoAlvo = PublicoAlvo.Estudante;
+            double valor = _faker.Random.Number(100, 1500);
+            string descricao = _faker.Lorem.Paragraph();
 
-			Curso curso = new Curso(_nome, _descricao, _cargaHoraria, _publicoAlvo, _valor);
+            Curso curso = new Curso(nome, descricao, cargaHoraria, publicoAlvo, valor);
 
-			Assert.Equal(_nome, curso.Nome);
-			Assert.Equal(_descricao, curso.Descricao);
-			Assert.Equal(_cargaHoraria, curso.CargaHoraria);
-			Assert.Equal(_publicoAlvo, curso.PublicoAlvo);
-			Assert.Equal(_valor, curso.Valor);
+			Assert.Equal(nome, curso.Nome);
+			Assert.Equal(descricao, curso.Descricao);
+			Assert.Equal(cargaHoraria, curso.CargaHoraria);
+			Assert.Equal(publicoAlvo, curso.PublicoAlvo);
+			Assert.Equal(valor, curso.Valor);
 		}
 
 		[Theory]
@@ -74,6 +57,8 @@ namespace CursoOnline.DominioTest.Cursos
 			Assert.Throws<ArgumentException>(() => _Builder.CursoBuilder.Novo().ComValor(valorInvalido).Build()).ComMensagem(CursoOnline.Web._base.Resource.ValorInvalido);
 		}
 
+		//TODO
+		//?
 		[Fact]
 		public void DeveAlterarNome()
 		{

@@ -8,7 +8,7 @@ namespace CursoOnline.Web.Models
 {
 	public class Curso
 	{
-		public Guid Id { get; set; }
+		public int Id { get; set; }
 
 		[Required(AllowEmptyStrings = false)]
 		[DisallowNull]
@@ -33,21 +33,6 @@ namespace CursoOnline.Web.Models
 
 		public Curso(string nome, string descricao, double cargaHoraria, PublicoAlvo publicoAlvo, double valor)
 		{
-			if (nome == string.Empty || nome == null)
-			{
-				throw new ArgumentException(CursoOnline.Web._base.Resource.NomeInvalido);
-			}
-
-			if (cargaHoraria < 1)
-			{
-				throw new ArgumentException(CursoOnline.Web._base.Resource.CargaInvalida);
-			}
-
-			if (valor <= 1)
-			{
-				throw new ArgumentException(CursoOnline.Web._base.Resource.ValorInvalido);
-			}
-
 			Nome = nome;
 			Descricao = descricao;
 			CargaHoraria = cargaHoraria;

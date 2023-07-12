@@ -22,5 +22,7 @@ namespace CursoOnline.Web.Data
         public DbSet<CursoOnline.Web.Models.Curso> Curso { get; set; } = default!;
 
         public DbSet<CursoOnline.Web.Models.Aluno> Aluno { get; set; } = default!;
+
+
     }
 }

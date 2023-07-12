@@ -29,7 +29,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="PublicoAlvo" class="control-label"></label>
-                <select asp-for="PublicoAlvo" class="form-control"></select>
+                <select asp-for="PublicoAlvo" class="form-control">
+                    <option value="0">Estudante</option>
+                    <option value="1">Universitário</option>
+                    <option value="2">Empregado</option>
+                    <option value="3">Empreendedor</option>
+                </select>
                 <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
             </div>
             <div class="form-group">

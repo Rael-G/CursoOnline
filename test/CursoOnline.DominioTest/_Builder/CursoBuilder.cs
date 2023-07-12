@@ -1,18 +1,20 @@
-﻿using CursoOnline.Web.Models;
+﻿using Bogus;
+using CursoOnline.Web.Models;
 using CursoOnline.Web.Models.Enums;
 
 namespace CursoOnline.DominioTest._Builder
 {
 	internal class CursoBuilder
 	{
-		private string _nome = "informatica básica";
-		private double _cargaHoraria = 20f;
-		private PublicoAlvo _publicoAlvo = PublicoAlvo.Estudante;
-		private double _valor = 950f;
-		private string _descricao = "Uma descrição";
-		private int _id = 223;
+        static Faker _faker = new Faker();
 
-		public static CursoBuilder Novo() 
+        private string _nome = _faker.Name.JobTitle();
+		private double _cargaHoraria = _faker.Random.Number(1, 100);
+		private double _valor = _faker.Random.Number(1, 1000);
+		private string _descricao = _faker.Lorem.Paragraph();
+        private PublicoAlvo _publicoAlvo = (PublicoAlvo)_faker.Random.Number(0, 3);
+
+        public static CursoBuilder Novo() 
 		{
 			return new CursoBuilder();
 		}
@@ -44,12 +46,6 @@ namespace CursoOnline.DominioTest._Builder
 		public CursoBuilder ComValor(double valor)
 		{
 			_valor = valor;
-			return this;
-		}
-
-		public CursoBuilder ComId(int id)
-		{
-			_id = id;
 			return this;
 		}
 
